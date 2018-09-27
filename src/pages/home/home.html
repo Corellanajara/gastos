@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Gastos pototos
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="sugerencias()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <span (click)="updateSaldo(key)">{{Saldo}}</span>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h5>Hola Amore mio, Vamos a ser ordenados, ya?</h5>
+  <form [formGroup]="infoForm">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" formControlName="Nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Categoria</ion-label>
+      <ion-select formControlName="Categoria" >
+        <ion-option *ngFor="let data of Categorias" value="{{data.key}}">{{data.Nombre}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <button type="button" (click)="addCategoria()" ion-button name="button">Añadir Categoria</button>
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY" formControlName="Fecha">
+      </ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Persona</ion-label>
+      <ion-select formControlName="Persona" >
+        <ion-option *ngFor="let data of Personas" value="{{data.key}}">{{data.Nombre}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <button type="button" (click)="addPersona()" ion-button name="button">Añadir Persona</button>
+    <ion-item>
+      <ion-label position="floating">Monto</ion-label>
+      <ion-input type="number" formControlName="Monto"></ion-input>
+    </ion-item>
+    <ion-item-divider>
+
+    </ion-item-divider>
+    <button type="button" ion-button block  name="button" (click)="addGasto()">Añadir Gasto!</button>
+  </form>
+  <ion-item-divider style="text-align:center">
+    Lista de gastos
+  </ion-item-divider>
+  <ion-list>
+    <ion-item *ngFor='let gasto of Gastos'>
+      {{gasto.Nombre}}
+      <button ion-button outline item-end icon-start>
+        <ion-icon name="ios-cash-outline"></ion-icon>
+        {{gasto.Monto}}
+      </button>
+    </ion-item>
+  </ion-list>
+  <ion-item-divider>
+    <ion-item style="text-align:right">
+      <p><b>{{GastoTotal}}</b></p>
+    </ion-item>
+  </ion-item-divider>
+
+
+</ion-content>

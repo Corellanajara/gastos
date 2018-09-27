@@ -1,0 +1,39 @@
+<!--
+  Generated template for the SugerenciasPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>sugerencias</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <button type="button" (click)="addSugerencia()" block ion-button name="button">Añadir sugerencia</button>
+  <ion-item-divider style="text-align:center">
+      Sugerencias
+  </ion-item-divider>
+
+  <ion-list>
+
+    <ion-item *ngFor='let sugerencia of Sugerencias'>
+     <h3 (click)='abrirSugerencia(sugerencia.Contenido)'>{{sugerencia.Titulo}}</h3>
+
+
+
+    </ion-item>
+    <ion-item *ngFor='let sugerencia of Sugerencias'>
+       <p (click)='abrirSugerencia(sugerencia.Contenido)'>{{sugerencia.Titulo}}</p>
+       <button ion-button outline item-end icon-start>
+         <ion-icon name="star"></ion-icon>
+           <ion-checkbox color="dark" checked="true"></ion-checkbox>
+       </button>
+     </ion-item>
+
+  </ion-list>
+</ion-content>
