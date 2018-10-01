@@ -66,9 +66,33 @@ export class SugerenciasPage {
     let alert = this.alertController.create({
       title: 'Sugerencia',
       subTitle: contenido,
-      buttons: ['Dismiss']
+      buttons: ['Ok']
     });
     alert.present();
+    }
+
+  async delete(key) {
+      console.log("borrando!");
+      const alert = await this.alertController.create({
+        title: 'Estas segur@?!',
+        message: 'Quieres borrar esta Sugerencia?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('cancel');
+            }
+          }, {
+            text: 'Okey',
+            handler: () => {
+              firebase.database().ref('Sugerencias/'+key).remove();
+            }
+          }
+        ]
+      });
+      alert.present();
     }
 
 }

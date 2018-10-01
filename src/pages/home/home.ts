@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController,AlertController ,ToastController} from 'ionic-angular';
 import * as firebase from 'Firebase';
+import {SugerenciasPage} from '../sugerencias/sugerencias';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators, FormArray } from '@angular/forms';
 @Component({
   selector: 'page-home',
@@ -18,7 +19,8 @@ export class HomePage {
   Gastos : any;
   Saldo : any;
   key : any;
-  GastoTotal = 'Aun no cargan datos';
+  GastoTotal  = 0;
+  mostrar = false;
 
   constructor(
     public navCtrl: NavController,
@@ -54,16 +56,18 @@ export class HomePage {
     this.saldos.on('value', resp => {
       let Saldos = snapshotToArray(resp);
       console.log(Saldos)
-      this.Saldo = Saldos[0].Cantidad;
-      this.key = Saldos[0].key;
+      this.Saldo = Saldos[Saldos.length-1].Cantidad;
     });
 
   }
-
+  setVisible(){
+    this.mostrar = !this.mostrar;
+  }
   async delete(key) {
+    console.log("borrando!");
     const alert = await this.alertController.create({
       title: 'Estas segur@?!',
-      message: 'Quieres borrar esta comunicacion?',
+      message: 'Quieres borrar este Gasto?',
       buttons: [
         {
           text: 'Cancelar',
@@ -75,12 +79,14 @@ export class HomePage {
         }, {
           text: 'Okey',
           handler: () => {
-            firebase.database().ref('infos/'+key).remove();
+            firebase.database().ref('Gastos/'+key).remove();
           }
         }
       ]
     });
+    alert.present();
   }
+
   presentToast() {
     let toast = this.toastCtrl.create({
       message: 'Gasto añadido correctamente!',
@@ -98,9 +104,10 @@ export class HomePage {
     let newInfo = firebase.database().ref('Gastos/').push();
     newInfo.set(this.infoForm.value);
     this.presentToast();
+    this.infoForm.reset();
     //this.router.navigate(['/home/']);
   }
-  updateSaldo(key){
+  updateSaldo(){
     let alert = this.alertController.create({
       title: 'Actualizar el saldo',
       inputs: [
@@ -120,9 +127,10 @@ export class HomePage {
         {
           text: 'Actualizar',
           handler: data => {
-
-              let cantidad = { Cantidad : data.Cantidad};
-              let newInfo = firebase.database().ref('Saldo/'+key).update(cantidad);
+              let today = this.getFecha();
+              let cantidad = { Cantidad : data.Cantidad , Fecha : today};
+              let newInfo = firebase.database().ref('Saldos/').push();
+              newInfo.set(cantidad);//valores );
 
           }
         }
@@ -130,6 +138,23 @@ export class HomePage {
     });
     alert.present();
 
+
+  }
+  getFecha(){
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    let d = '';
+    let m = '';
+    let fecha = '';
+    if(dd<10) {
+      d = '0'+dd
+    }
+    if(mm<10) {
+      m = '0'+mm
+    }
+    return fecha = m + '/' + d + '/' + yyyy;
 
   }
   addCategoria(){
@@ -155,14 +180,14 @@ export class HomePage {
               let Ctgoria = { Nombre : data.Nombre};
               let newInfo = firebase.database().ref('Categorias/').push();
               newInfo.set(Ctgoria);//valores );
+
           }
         }
       ]
     });
     alert.present();
-
-
   }
+
   addPersona(){
     let alert = this.alertController.create({
       title: 'Añadir una Persona',
@@ -195,7 +220,7 @@ export class HomePage {
 
   }
   sugerencias(){
-    this.navCtrl.push('SugerenciasPage');
+    this.navCtrl.push(SugerenciasPage);
   }
 
 }

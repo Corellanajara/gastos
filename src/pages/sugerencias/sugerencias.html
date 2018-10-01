@@ -21,19 +21,14 @@
 
   <ion-list>
 
-    <ion-item *ngFor='let sugerencia of Sugerencias'>
-     <h3 (click)='abrirSugerencia(sugerencia.Contenido)'>{{sugerencia.Titulo}}</h3>
-
-
-
-    </ion-item>
-    <ion-item *ngFor='let sugerencia of Sugerencias'>
-       <p (click)='abrirSugerencia(sugerencia.Contenido)'>{{sugerencia.Titulo}}</p>
-       <button ion-button outline item-end icon-start>
-         <ion-icon name="star"></ion-icon>
-           <ion-checkbox color="dark" checked="true"></ion-checkbox>
-       </button>
-     </ion-item>
-
+    <ion-item-sliding *ngFor='let sugerencia of Sugerencias'>
+      <ion-item>
+        <h3 (click)='abrirSugerencia(sugerencia.Contenido)'>{{sugerencia.Titulo}}</h3>
+       </ion-item>
+      <ion-item-options side="left">
+        <button ion-button color="primary" (click)="abrirSugerencia(sugerencia.Contenido)">Ver</button>
+        <button ion-button color="danger" (click)="delete(sugerencia.key)">ELIMINAR</button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

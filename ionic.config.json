@@ -1,5 +1,7 @@
 {
   "name": "gastos",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

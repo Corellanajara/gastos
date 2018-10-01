@@ -4,17 +4,23 @@
       Gastos pototos
     </ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="sugerencias()">
+      <button ion-button icon-only (click)="updateSaldo()">
         <ion-icon name="add"></ion-icon>
+        <ion-title >
+          {{Saldo}}
+        </ion-title>
       </button>
-      <span (click)="updateSaldo(key)">{{Saldo}}</span>
+
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h5>Hola Amore mio, Vamos a ser ordenados, ya?</h5>
-  <form [formGroup]="infoForm">
+  <h3> Para agregar sugerencias hacer click <span (click)="sugerencias()" style="color:red">aqui!</span> </h3>
+
+  <button type="button" ion-button block name="button" (click)="setVisible()" [style.display]="mostrar ? 'block' : 'none'">Ocultar añadir Gastos!</button>
+
+  <form [formGroup]="infoForm" [style.display]="mostrar ? 'block' : 'none'">
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
       <ion-input type="text" formControlName="Nombre"></ion-input>
@@ -22,7 +28,7 @@
     <ion-item>
       <ion-label position="floating">Categoria</ion-label>
       <ion-select formControlName="Categoria" >
-        <ion-option *ngFor="let data of Categorias" value="{{data.key}}">{{data.Nombre}}</ion-option>
+        <ion-option *ngFor="let data of Categorias" value="{{data.Nombre}}">{{data.Nombre}}</ion-option>
       </ion-select>
     </ion-item>
     <button type="button" (click)="addCategoria()" ion-button name="button">Añadir Categoria</button>
@@ -34,7 +40,7 @@
     <ion-item>
       <ion-label position="floating">Persona</ion-label>
       <ion-select formControlName="Persona" >
-        <ion-option *ngFor="let data of Personas" value="{{data.key}}">{{data.Nombre}}</ion-option>
+        <ion-option *ngFor="let data of Personas" value="{{data.Nombre}}">{{data.Nombre}}</ion-option>
       </ion-select>
     </ion-item>
     <button type="button" (click)="addPersona()" ion-button name="button">Añadir Persona</button>
@@ -45,23 +51,41 @@
     <ion-item-divider>
 
     </ion-item-divider>
-    <button type="button" ion-button block  name="button" (click)="addGasto()">Añadir Gasto!</button>
+
   </form>
+  <button type="button" ion-button block  name="button" (click)="addGasto()" [style.display]="mostrar ? 'block' : 'none'">Añadir Gasto!</button>
+
+  <button type="button" ion-button block  name="button" (click)="setVisible()" [style.display]="mostrar ? 'none' : 'block'">Mostrar añadir Gastos!</button>
+
+
   <ion-item-divider style="text-align:center">
     Lista de gastos
   </ion-item-divider>
+
+
+
   <ion-list>
-    <ion-item *ngFor='let gasto of Gastos'>
-      {{gasto.Nombre}}
+  <ion-item-sliding *ngFor="let gasto of Gastos">
+    <ion-item>
+      <b>{{gasto.Categoria}}</b>
+      <h2 style="text-align:center">{{gasto.Nombre}}</h2>
       <button ion-button outline item-end icon-start>
         <ion-icon name="ios-cash-outline"></ion-icon>
         {{gasto.Monto}}
       </button>
     </ion-item>
-  </ion-list>
+    <ion-item-options side="left">
+      <button ion-button color="primary" (click)="edit(gasto.key)">EDITAR(aunnoestalistoxd)</button>
+      <button ion-button color="danger" (click)="delete(gasto.key)">ELIMINAR</button>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
+
+
   <ion-item-divider>
     <ion-item style="text-align:right">
-      <p><b>{{GastoTotal}}</b></p>
+      <p><b *ngIf='GastoTotal!=0'>{{GastoTotal}}</b></p>
+      <p><b *ngIf='GastoTotal==0'>Aun no existen gastos!</b></p>
     </ion-item>
   </ion-item-divider>
 
